@@ -68,9 +68,6 @@ const SearchApi = () => {
 				<form>
 					<h1>GitHub Repository Search and Bookmarking</h1>
 					<div class="mb-3">
-						<label for="exampleInputEmail1" class="form-label">
-							Search Git Repository
-						</label>
 						<input
 							type="text"
 							class="form-control"
@@ -78,75 +75,74 @@ const SearchApi = () => {
 							aria-describedby="emailHelp"
 							value={searchQuery}
 							onChange={(e) => setSearchQuery(e.target.value)}
+							placeholder="Search Git Repository"
 						/>
 					</div>
 				</form>
+				<hr></hr>
+				<div className="d-flex align-items-start">
+					<div>
+						<h2>Search Results</h2>
+						<ul>
+							{repositories.map((repository) => (
+								<li key={repository.id}>
+									<strong>{repository.name}</strong> by {repository.owner.login}
+									<p>{repository.description}</p>
+									<span>Stars: {repository.stargazers_count}</span>
+									<button onClick={() => handleBookmark(repository)}>
+										{bookmarkedRepositories.some(
+											(item) => item.id === repository.id
+										)
+											? "Unbookmark"
+											: "Bookmark"}
+									</button>
+								</li>
+							))}
+						</ul>
+						{totalPages > 1 && (
+							<div>
+								<button
+									onClick={() =>
+										setCurrentPage((prevPage) => Math.max(prevPage - 1, 1))
+									}
+									disabled={currentPage === 1}
+								>
+									Previous
+								</button>
+								<span>
+									Page {currentPage} of {totalPages}
+								</span>
+								<button
+									onClick={() =>
+										setCurrentPage((prevPage) =>
+											Math.min(prevPage + 1, totalPages)
+										)
+									}
+									disabled={currentPage === totalPages}
+								>
+									Next
+								</button>
+							</div>
+						)}
+					</div>
+					<div>
+						<h2>Bookmarked Repositories</h2>
+						<ul>
+							{bookmarkedRepositories.map((repository) => (
+								<li key={repository.id}>
+									<strong>{repository.name}</strong> by {repository.owner.login}
+									<p>{repository.description}</p>
+									<span>Stars: {repository.stargazers_count}</span>
+									<button onClick={() => handleBookmark(repository)}>
+										Unbookmark
+									</button>
+								</li>
+							))}
+						</ul>
+					</div>
+				</div>
 			</div>
 
-			<h1>GitHub Repository Search and Bookmarking</h1>
-			<input
-				type="text"
-				placeholder="Search for repositories"
-				value={searchQuery}
-				onChange={(e) => setSearchQuery(e.target.value)}
-			/>
-			<div>
-				<h2>Search Results</h2>
-				<ul>
-					{repositories.map((repository) => (
-						<li key={repository.id}>
-							<strong>{repository.name}</strong> by {repository.owner.login}
-							<p>{repository.description}</p>
-							<span>Stars: {repository.stargazers_count}</span>
-							<button onClick={() => handleBookmark(repository)}>
-								{bookmarkedRepositories.some(
-									(item) => item.id === repository.id
-								)
-									? "Unbookmark"
-									: "Bookmark"}
-							</button>
-						</li>
-					))}
-				</ul>
-				{totalPages > 1 && (
-					<div>
-						<button
-							onClick={() =>
-								setCurrentPage((prevPage) => Math.max(prevPage - 1, 1))
-							}
-							disabled={currentPage === 1}
-						>
-							Previous
-						</button>
-						<span>
-							Page {currentPage} of {totalPages}
-						</span>
-						<button
-							onClick={() =>
-								setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages))
-							}
-							disabled={currentPage === totalPages}
-						>
-							Next
-						</button>
-					</div>
-				)}
-			</div>
-			<div>
-				<h2>Bookmarked Repositories</h2>
-				<ul>
-					{bookmarkedRepositories.map((repository) => (
-						<li key={repository.id}>
-							<strong>{repository.name}</strong> by {repository.owner.login}
-							<p>{repository.description}</p>
-							<span>Stars: {repository.stargazers_count}</span>
-							<button onClick={() => handleBookmark(repository)}>
-								Unbookmark
-							</button>
-						</li>
-					))}
-				</ul>
-			</div>
 			{totalPageCount}
 		</>
 	);
