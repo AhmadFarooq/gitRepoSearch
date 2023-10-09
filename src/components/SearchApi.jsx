@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { SearchResults } from "./SearchResults";
+import star from "../assets/images/star.png";
+import Pagination from "./Pagination";
 
 const ROW_COUNT_PAGE = 10;
 const DEBOUNCE_DELAY = 300; // Adjust the debounce delay as needed (in milliseconds)
@@ -60,8 +63,6 @@ const SearchApi = () => {
 		}
 	};
 
-	const totalPages = Math.ceil(repositories.length / 10);
-
 	return (
 		<>
 			<div className="container">
@@ -71,8 +72,7 @@ const SearchApi = () => {
 						<input
 							type="text"
 							class="form-control"
-							id="exampleInputEmail1"
-							aria-describedby="emailHelp"
+							id="repoSearch"
 							value={searchQuery}
 							onChange={(e) => setSearchQuery(e.target.value)}
 							placeholder="Search Git Repository"
@@ -80,70 +80,59 @@ const SearchApi = () => {
 					</div>
 				</form>
 				<hr></hr>
-				<div className="d-flex align-items-start">
-					<div>
-						<h2>Search Results</h2>
-						<ul>
-							{repositories.map((repository) => (
-								<li key={repository.id}>
-									<strong>{repository.name}</strong> by {repository.owner.login}
-									<p>{repository.description}</p>
-									<span>Stars: {repository.stargazers_count}</span>
-									<button onClick={() => handleBookmark(repository)}>
-										{bookmarkedRepositories.some(
-											(item) => item.id === repository.id
-										)
-											? "Unbookmark"
-											: "Bookmark"}
-									</button>
-								</li>
-							))}
-						</ul>
-						{totalPages > 1 && (
-							<div>
-								<button
-									onClick={() =>
-										setCurrentPage((prevPage) => Math.max(prevPage - 1, 1))
-									}
-									disabled={currentPage === 1}
-								>
-									Previous
-								</button>
-								<span>
-									Page {currentPage} of {totalPages}
-								</span>
-								<button
-									onClick={() =>
-										setCurrentPage((prevPage) =>
-											Math.min(prevPage + 1, totalPages)
-										)
-									}
-									disabled={currentPage === totalPages}
-								>
-									Next
-								</button>
-							</div>
-						)}
+				<div className="row">
+					<div className="col text-start col-md-6">
+						<div className="border border-3 rounded p-3">
+							<h4 className="mb-3 text-center">Search Results</h4>
+							<SearchResults
+								SearchResultsArrAY={repositories}
+								handleBookmark={handleBookmark}
+								bookmarkedRepositoriesArray={bookmarkedRepositories}
+							/>
+						</div>
 					</div>
-					<div>
-						<h2>Bookmarked Repositories</h2>
-						<ul>
-							{bookmarkedRepositories.map((repository) => (
-								<li key={repository.id}>
-									<strong>{repository.name}</strong> by {repository.owner.login}
-									<p>{repository.description}</p>
-									<span>Stars: {repository.stargazers_count}</span>
-									<button onClick={() => handleBookmark(repository)}>
-										Unbookmark
-									</button>
-								</li>
-							))}
-						</ul>
+					<div className="col col-md-6">
+						<div className="border border-3 rounded p-3">
+							<h4 className="mb-3 text-center">Bookmarked Repositories</h4>
+							<ul>
+								{bookmarkedRepositories.map((repository) => (
+									<li className="card p-3 mb-3" key={repository.id}>
+										<p>
+											<strong>{repository.name}</strong> by
+											{repository.owner.login}
+										</p>
+										<p>{repository.description}</p>
+										<strong className="d-flex align-items-center">
+											Stars: <img src={star} alt="" />{" "}
+											{repository.stargazers_count}
+										</strong>
+										<button
+											type="button"
+											className="w-50 mt-2 btn btn-secondary"
+											onClick={() => handleBookmark(repository)}
+										>
+											Unbookmark
+										</button>
+									</li>
+								))}
+							</ul>
+						</div>
+					</div>
+					{totalPageCount > 0 ? (
+						<div className="card p-3 justify-content-center bg-primary-subtle col-auto mx-auto mt-5 text-center">
+							<Pagination
+								totalPageCount={totalPageCount}
+								setCurrentPage={setCurrentPage}
+								currentPage={currentPage}
+							/>
+						</div>
+					) : null}
+					<div className="card p-3 bg-primary-subtle col-auto mx-auto mt-5 text-center">
+						Total page count for the keyword is:
+						<strong>{totalPageCount}</strong>
 					</div>
 				</div>
 			</div>
-
-			{totalPageCount}
 		</>
 	);
 };
