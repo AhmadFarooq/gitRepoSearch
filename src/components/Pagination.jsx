@@ -7,7 +7,7 @@ const Pagination = (props) => {
 			{totalPageCount > 1 && (
 				<>
 					<nav aria-label="Page navigation example">
-						<ul class="pagination gap-3 align-items-center">
+						<ul class="pagination gap-3 align-items-center justify-content-between">
 							<li class="page-item">
 								<button
 									className="btn btn-primary"

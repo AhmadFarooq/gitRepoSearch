@@ -1,4 +1,3 @@
-import "./App.css";
 import SearchApi from "./components/SearchApi";
 
 function App() {

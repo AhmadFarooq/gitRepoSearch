@@ -1,0 +1,35 @@
+ul {
+	padding: 0 !important;
+	margin: 0 !important;
+}
+
+img {
+	max-width: 100%;
+}
+body {
+	background: url("assets/images/gitbg.jpg") no-repeat center top;
+	background-size: cover;
+}
+.container {
+	max-width: 1000px;
+	margin: 0 auto;
+	padding: 50px 30px;
+	.gitLogo {
+		display: block;
+		margin: 30px auto;
+		max-width: 70px;
+	}
+	form {
+		max-width: 500px;
+		padding: 20px;
+	}
+	.search-results,
+	.bookmarked-results {
+		max-height: 400px;
+		overflow-y: auto;
+	}
+	li img {
+		max-width: 15px;
+		margin: 0 10px;
+	}
+}
