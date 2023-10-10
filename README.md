@@ -4,6 +4,10 @@ This is begineer level react js application, with the intention to showcase sear
 The search field is a simple input field, upon text change it calls a GIT search API i.e. "https://api.github.com/search/repositories"
 Once the results are shown, we will show the list of results and the total number of results divided into 10 equal results per page.
 
+# Repo Cloning
+
+git clone "https://github.com/AhmadFarooq/gitRepoSearch.git"
+
 # Style sheet
 
 Added a separate .scss stylesheet to add custom styling other then Bootstrap's native styles.
